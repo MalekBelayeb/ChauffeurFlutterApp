@@ -1,9 +1,32 @@
+import 'package:chauffeur_app/view/screens/HomeScreen.dart';
+import 'package:chauffeur_app/view/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(new MaterialApp(
+    title: "Peugeot App",
+    debugShowCheckedModeBanner: false,
+    home: new LoginScreen(),
+    routes: {'/login':(_) => LoginScreen(), '/home':(_)=> HomeScreen() },
+    onGenerateRoute: (RouteSettings settings) {
+      switch (settings.name) {
+        case '/login':
+          return new MyCustomRoute(
+            builder: (_) => new LoginScreen(),
+            settings: settings,
+          );
+
+        case '/home':
+          return new MyCustomRoute(
+            builder: (_) => new HomeScreen(),
+            settings: settings,
+          );
+      }
+    },
+  ));
 }
 
+/*
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -111,5 +134,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+*/
+class MyCustomRoute<T> extends MaterialPageRoute<T> {
+  MyCustomRoute({required WidgetBuilder builder, required RouteSettings settings})
+      : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    // if (settings.arguments) return child;
+    return new FadeTransition(opacity: animation, child: child);
   }
 }
