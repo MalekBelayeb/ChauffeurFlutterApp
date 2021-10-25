@@ -17,8 +17,8 @@ class CalendrierTabScreen extends StatefulWidget
 }
 
 class _CalendrierTabScreenState extends State<CalendrierTabScreen> {
+  List<Mission> missions = [];
 
-  List<Mission> missions = MissionController.instance.getMissionList();
   late ValueNotifier<List<Mission>> missionByDate = ValueNotifier(<Mission>[]);
 
   DateTime _focusedDay = DateTime.now();
@@ -27,16 +27,18 @@ class _CalendrierTabScreenState extends State<CalendrierTabScreen> {
 
   @override
   void initState() {
+
     super.initState();
-    CalendarFormat _calendarFormat = CalendarFormat.month;
-    DateTime _focusedDay = DateTime.now();
-    DateTime? _selectedDay;
-    if(_selectedDay!=null)
-      {
-        missionByDate = ValueNotifier(this.dayDidSelected(_selectedDay));
-      }else{
-      missionByDate = ValueNotifier(this.dayDidSelected(_focusedDay));
-    }
+
+    MissionController.instance.getMissionList().then((val) =>
+    {
+
+      this.missions = val,
+
+      missionByDate = ValueNotifier(this.dayDidSelected( this._selectedDay!=null ? this._selectedDay!:this._focusedDay)),
+
+    });
+
   }
 
   @override
@@ -65,7 +67,8 @@ class _CalendrierTabScreenState extends State<CalendrierTabScreen> {
             toAnimate: true,
             animationDuration: Duration(seconds: 2),
             badgeContent: Text(count.toString()),
-            badgeColor: Colors.greenAccent,
+            badgeColor: Color.fromRGBO(0,191,191, 1),
+            
 
           )
       );

@@ -30,6 +30,10 @@ dependencies:
   flutter:
     sdk: flutter
   table_calendar: ^3.0.3
+  http: ^0.12.2
+  rounded_loading_button: ^2.0.8
+
+
   badges: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.

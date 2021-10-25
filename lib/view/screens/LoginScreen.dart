@@ -1,9 +1,10 @@
+import 'package:chauffeur_app/controller/LoginController.dart';
+import 'package:chauffeur_app/entity/User.dart';
+import 'package:chauffeur_app/utils/CustomPageRoute.dart';
 import 'package:chauffeur_app/utils/StafimColors.dart';
 import 'package:chauffeur_app/view/screens/HomeScreen.dart';
-import 'package:chauffeur_app/view/widgets/InputFieldArea.dart';
-import 'package:chauffeur_app/view/widgets/SignInButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/animation.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginScreen extends StatefulWidget
 {
@@ -14,19 +15,78 @@ class LoginScreen extends StatefulWidget
 
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
 
-  late AnimationController _loginButtonController;
+  final RoundedLoadingButtonController _btnControllerInfo = RoundedLoadingButtonController();
+
+  String cin = "",mdp = "";
+
+  void signInTapped() async
+  {
+   var result = await LoginController.instance.SignInChauffeur(cin, mdp);
+
+   showLoginResult(String message)
+   {
+     showDialog(
+       context: context,
+       builder: (context) {
+         return  AlertDialog(
+           title: new Text(message),
+           actions: <Widget>[
+              TextButton(
+               onPressed: () => Navigator.of(context).pop(false),
+               child: new Text('Réessayer'),
+             )
+           ],
+         );
+       },
+     );
+   }
+
+   if(result is User)
+     {
+
+       print("User ok");
+       _btnControllerInfo.reset();
+       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen()), (Route<dynamic> route) => false);
+     }else if(result is int)
+       {
+       if((result as int) == 402)
+         {
+            showLoginResult("Votre compte n'est verifier par un admin");
+            _btnControllerInfo.reset();
+
+         }else if((result as int) == 403)
+           {
+             showLoginResult("Ce compte a été désactiver par son propriétaire");
+             _btnControllerInfo.reset();
+
+           }else if((result as int) == 404)
+       {
+
+         showLoginResult("Cin ou mot de passe incorrect, prière de vérifier vos coordonnées");
+         _btnControllerInfo.reset();
+
+       }
+
+       }else {
+       showLoginResult("une erreur s'est produite réessayer plus tard");
+       _btnControllerInfo.reset();
+
+
+   }
+
+  }
+
 
   @override
   void initState() {
     super.initState();
 
-    this._loginButtonController =AnimationController(duration: Duration(milliseconds: 3000),vsync: this);
 
   }
   @override
   void dispose() {
     // TODO: implement dispose
-    _loginButtonController.dispose();
+
     super.dispose();
   }
 
@@ -74,25 +134,103 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   Form(
                                       child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          InputFieldArea(hint: "Username", obscure: false, icon: Icons.person_outline),
-                                          InputFieldArea(hint: "Mot de passe", obscure: true, icon: Icons.lock_outline)],
+
+                                          Container(
+                                            decoration: new BoxDecoration(
+                                              border: new Border(
+                                                bottom: new BorderSide(
+                                                  width: 0.5,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            child: new TextFormField(
+                                              obscureText: false,
+
+
+    onChanged: (value){
+
+    setState(() {
+    this.cin = value;
+    });
+    },
+
+    style: const TextStyle(
+                                                fontFamily: "peugeot-regular",
+                                                color: Colors.black,
+                                              ),
+                                               decoration: new InputDecoration(
+                                                icon: new Icon(
+                                                  Icons.person_outline,
+                                                  color: Colors.black,
+                                                ),
+                                                border: InputBorder.none,
+                                                hintText: "Cin",
+                                                hintStyle: const TextStyle(color: Colors.black26, fontSize: 15.0),
+                                                contentPadding: const EdgeInsets.only(
+                                                    top: 30.0, right: 30.0, bottom: 30.0, left: 5.0),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            decoration: new BoxDecoration(
+                                              border: new Border(
+                                                bottom: new BorderSide(
+                                                  width: 0.5,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            child: new TextFormField(
+                                              obscureText: true,
+
+
+
+                                              onChanged: (value){
+
+                                                setState(() {
+                                                  this.mdp = value;
+                                                });
+
+                                              },
+                                              style: const TextStyle(
+                                                fontFamily: "peugeot-regular",
+                                                color: Colors.black,
+                                              ),
+                                              decoration: new InputDecoration(
+                                                icon: new Icon(
+                                                  Icons.lock_outline,
+                                                  color: Colors.black,
+                                                ),
+                                                border: InputBorder.none,
+                                                hintText: "Mot de passe",
+                                                hintStyle: const TextStyle(color: Colors.black26, fontSize: 15.0),
+                                                contentPadding: const EdgeInsets.only(
+                                                    top: 30.0, right: 30.0, bottom: 30.0, left: 5.0),
+                                              ),
+                                            ),
+                                          )
+
+                                        ],
 
                                       ))],
                               ),
                             ),
 
-                            InkWell(onTap:() {
+                            Padding(
+                              padding: const EdgeInsets.only(top:20),
+                              child: Container(
 
-                              setState(() {
+                                width: 120.0,
+                                height: 40.0,
+                                child: RoundedLoadingButton(
 
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen()),(route)=>false);
-
-                              });
-
-                            },child: Align(alignment: Alignment.centerRight, child:
-                            Padding(padding: EdgeInsets.only(top: 50,right: 20),child: SignInButton()),)
-
-                              ,)
+                                  child: Text('Se connecter', style: TextStyle(fontFamily: "peugeot-regular",fontSize: 12,color: Colors.white)),
+                                  controller: _btnControllerInfo,
+                                  onPressed: signInTapped,
+                                ),
+                              ),
+                            )
                           ],
                         )],
                     )

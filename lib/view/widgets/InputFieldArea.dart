@@ -5,6 +5,7 @@ class InputFieldArea extends StatelessWidget {
   final bool obscure;
   final IconData icon;
 
+
   InputFieldArea({required this.hint, required this.obscure,required this.icon});
   @override
   Widget build(BuildContext context) {

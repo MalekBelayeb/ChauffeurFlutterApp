@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'package:chauffeur_app/controller/MissionController.dart';
+import 'package:chauffeur_app/entity/Etat.dart';
 import 'package:chauffeur_app/entity/Mission.dart';
+import 'package:chauffeur_app/entity/TraitementEnum.dart';
 import 'package:chauffeur_app/utils/StafimColors.dart';
 import 'package:chauffeur_app/view/cells/MissionCell.dart';
-import 'package:chauffeur_app/view/widgets/AjouterEtatButton.dart';
 import 'package:flutter/material.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 
 class MissionDetailScreen extends StatefulWidget
@@ -15,32 +19,67 @@ class MissionDetailScreen extends StatefulWidget
 }
 
 class _MissionDetailScreenState extends State<MissionDetailScreen> {
+  final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
 
   var items = [
     DropdownMenuItem(
-        value: 1,
+        value: 0,
         child: Text("En bon état")
     ), DropdownMenuItem(
-        value: 2,
+        value: 1,
         child: Text("Mal entretenu")
     )
     , DropdownMenuItem(
-        value: 3,
+        value: 2,
         child: Text("Condition médiocre")
     )
     , DropdownMenuItem(
-        value: 4,
+        value: 3,
         child: Text("En mauvais état")
     )
     , DropdownMenuItem(
-        value: 5,
+        value: 4,
         child: Text("Voiture morte")
     ), DropdownMenuItem(
-        value: 6,
+        value: 5,
         child: Text("Autre")
     )
   ];
-  int dropdownvalue = 1;
+
+  int dropdownvalue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if(this.widget.mission.etat != null)
+      {
+        dropdownvalue = Traitement.values.indexOf(this.widget.mission.etat!.etat);
+      }
+
+  }
+
+
+  String note = "";
+
+  void didTapped() async {
+
+    Mission mission = this.widget.mission;
+    Etat etat = Etat(Traitement.values[dropdownvalue], this.note);
+    mission.etat= etat;
+
+    MissionController.instance.updateMission(mission).then((value) => {
+
+      if(value == true)
+        {
+        _btnController.success()
+        }else{
+        _btnController.error()
+      }
+
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +155,7 @@ class _MissionDetailScreenState extends State<MissionDetailScreen> {
                                     this.dropdownvalue = newValue!;
 
                                   });
+
                                 },
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 items: items)
@@ -135,21 +175,45 @@ class _MissionDetailScreenState extends State<MissionDetailScreen> {
                         ],),
 
                       Container(
-                        width: MediaQuery.of(context).size.width-50,
 
+                        width: MediaQuery.of(context).size.width-50,
                         child:
                         TextFormField(
-
-                          decoration: InputDecoration(hintText: 'Ajouter votre note si besoin',hintStyle: TextStyle(fontSize: 12)),
+                          initialValue: this.widget.mission.etat == null ? "":(this.widget.mission.etat!.note == null || this.widget.mission.etat!.note.isEmpty) ? "" :this.widget.mission.etat!.note,
+                          decoration: InputDecoration(hintText: 'Ajouter votre note si besoin...',hintStyle:  TextStyle(
+                            fontFamily: "peugeot-italic",
+                            fontSize: 12,
+                            color: Colors.grey,
+                          )),
                           keyboardType: TextInputType.multiline,
                           maxLines: 4,
                           maxLength: 200,
-
+                          onChanged: (String val)
+                          {
+                            setState(() {
+                              this.note = val;
+                            });
+                          },
                         ),
                       ),
                       Padding(padding: EdgeInsets.only(top: 10),child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [AjouterEtatButton()],
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          this.widget.mission.etat == null ? Text('Pas encore traité',style:  TextStyle(
+                            fontFamily: "peugeot-regular",
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),):Container(),
+                          Container(
+                            width: 120.0,
+                            height: 60.0,
+                            child: RoundedLoadingButton(
+
+                              child: Text('Confirmer', style: TextStyle(color: Colors.white)),
+                              controller: _btnController,
+                              onPressed: didTapped,
+                            ),
+                          )],
                       ),)
                     ],
 

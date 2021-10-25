@@ -1,7 +1,9 @@
+import 'package:chauffeur_app/utils/CustomPageRoute.dart';
 import 'package:chauffeur_app/utils/StafimColors.dart';
 import 'package:chauffeur_app/view/screens/HomeTabChild/CalendrierTabScreen.dart';
 import 'package:chauffeur_app/view/screens/HomeTabChild/MesMissionsTabScreen.dart';
 import 'package:chauffeur_app/view/screens/LoginScreen.dart';
+import 'package:chauffeur_app/view/screens/SettingsScreen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -45,14 +47,34 @@ class HomeScreen extends StatelessWidget
 
           actions: [Padding(
               padding: EdgeInsets.only(right: 15.0),
-              child: GestureDetector(
-                onTap: () {
-                  leavingDialog(context);
-                },
-                child: Icon(
-                  Icons.exit_to_app_outlined ,
-                  size: 26.0,
-                ),
+              child: Row(
+
+                children: [
+                  Padding(
+
+                    padding: EdgeInsets.only(right: 15),
+                    child: GestureDetector(
+                    onTap: () {
+
+                      Navigator.push(context, CustomPageRoute(SettingsScreen()));
+
+                    },
+                    child: Icon(
+                      Icons.settings ,
+                      size: 26.0,
+                    ),
+                  )),
+
+                  GestureDetector(
+                    onTap: () {
+                      leavingDialog(context);
+                    },
+                    child: Icon(
+                      Icons.exit_to_app_outlined ,
+                      size: 26.0,
+                    ),
+                  )
+                ],
               )
           ),],
 
