@@ -43,10 +43,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
    if(result is User)
      {
-
+        User user = result as User;
        print("User ok");
        _btnControllerInfo.reset();
-       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen()), (Route<dynamic> route) => false);
+       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen(user)), (Route<dynamic> route) => false);
      }else if(result is int)
        {
        if((result as int) == 402)
@@ -89,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {

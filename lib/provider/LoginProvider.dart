@@ -12,6 +12,8 @@ class LoginProvider {
   static LoginProvider get instance => _instance;
 
   var updateMissionsUrl = Constants.HOST+":"+Constants.PORT+"/authFF/signInChauffeur";
+  var UpdateChauffeur = Constants.HOST+":"+Constants.PORT+"/authFF/UpdateChauffeur";
+  var deleteAccountChauffeur = Constants.HOST+":"+Constants.PORT+"/authFF/deleteAccountChauffeur";
 
   List<User> parseUser(String responseBody) {
 
@@ -40,6 +42,39 @@ class LoginProvider {
       return response.statusCode;
 
     }
+
+  }
+
+
+  Future<int> updateChauffeur(String id,String nom,String prenom) async {
+
+    var response = await http.post(UpdateChauffeur,
+        body: jsonEncode(
+            {
+              "idchauffeur":id,
+              "nom":nom,
+              "prenom":prenom
+            }
+        ), headers: {"Content-Type": "application/json"});
+
+    return response.statusCode;
+
+
+  }
+
+  Future<int> deleteChauffeur(String id) async {
+
+    var response = await http.post(deleteAccountChauffeur,
+        body: jsonEncode(
+            {
+
+              "idchauffeur":id,
+
+            }
+        ), headers: {"Content-Type": "application/json"});
+
+    return response.statusCode;
+
 
   }
 

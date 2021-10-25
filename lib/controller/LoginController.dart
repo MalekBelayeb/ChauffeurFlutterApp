@@ -16,6 +16,14 @@ class LoginController
     return await LoginProvider.instance.loginChauffeur(cin, password);
   }
 
+  Future<int> updateChauffeur(String id,String nom,String prenom) async {
 
+    return await LoginProvider.instance.updateChauffeur(id, nom, prenom);
+  }
+
+  Future<int> deleteChauffeur(String id) async {
+
+    return await LoginProvider.instance.deleteChauffeur(id);
+  }
 
   }

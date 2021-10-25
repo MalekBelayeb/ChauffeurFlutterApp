@@ -6,23 +6,7 @@ void main() {
   runApp(new MaterialApp(
     title: "Peugeot App",
     debugShowCheckedModeBanner: false,
-    home: new LoginScreen(),
-    routes: {'/login':(_) => LoginScreen(), '/home':(_)=> HomeScreen() },
-    onGenerateRoute: (RouteSettings settings) {
-      switch (settings.name) {
-        case '/login':
-          return new MyCustomRoute(
-            builder: (_) => new LoginScreen(),
-            settings: settings,
-          );
-
-        case '/home':
-          return new MyCustomRoute(
-            builder: (_) => new HomeScreen(),
-            settings: settings,
-          );
-      }
-    },
+    home: new LoginScreen()
   ));
 }
 

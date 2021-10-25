@@ -1,3 +1,4 @@
+import 'package:chauffeur_app/entity/User.dart';
 import 'package:chauffeur_app/utils/CustomPageRoute.dart';
 import 'package:chauffeur_app/utils/StafimColors.dart';
 import 'package:chauffeur_app/view/screens/HomeTabChild/CalendrierTabScreen.dart';
@@ -9,6 +10,10 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget
 {
+  User? user;
+
+  HomeScreen(this.user);
+
   leavingDialog(BuildContext context)
   {
     showDialog(
@@ -55,8 +60,11 @@ class HomeScreen extends StatelessWidget
                     padding: EdgeInsets.only(right: 15),
                     child: GestureDetector(
                     onTap: () {
+                      if(this.user != null)
+                        {
+                          Navigator.push(context, CustomPageRoute(SettingsScreen(this.user!)));
 
-                      Navigator.push(context, CustomPageRoute(SettingsScreen()));
+                        }
 
                     },
                     child: Icon(

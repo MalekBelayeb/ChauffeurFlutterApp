@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:chauffeur_app/controller/LoginController.dart';
+import 'package:chauffeur_app/entity/User.dart';
+import 'package:chauffeur_app/view/screens/LoginScreen.dart';
 import 'package:chauffeur_app/view/screens/SettingsChild/ChangePasswordChildScreen.dart';
 import 'package:chauffeur_app/view/screens/SettingsChild/DisableAccountChildScreen.dart';
 
@@ -8,6 +11,8 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class SettingsScreen extends StatefulWidget
 {
+  User user;
+  SettingsScreen(this.user);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -17,16 +22,53 @@ class SettingsScreen extends StatefulWidget
 class _SettingsScreenState extends State<SettingsScreen> {
   final RoundedLoadingButtonController _btnControllerInfo = RoundedLoadingButtonController();
 
-  void didTapped() async {
+  showSettingsUpdateInfoResult(String message)
+  {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return  AlertDialog(
+          title: new Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: new Text('Réessayer'),
+            )
+          ],
+        );
+      },
+    );
+  }
 
-    Timer(Duration(seconds: 3), () {
-      _btnControllerInfo.success();
-    });
+
+
+  void didTapped() async {
+    print("cin "+this.widget.user.cin);
+  
+    int result = await LoginController.instance.updateChauffeur(this.widget.user.id, this.nom, this.prenom);
+    if(result == 200 )
+      {
+        showSettingsUpdateInfoResult("Votre operation s'est bien passé");
+        this._btnControllerInfo.reset();
+
+      }else{
+
+      showSettingsUpdateInfoResult("Votre opération a été echoué");
+      this._btnControllerInfo.error();
+    }
 
   }
 
   String prenom="",nom="";
 
+  @override
+  void initState() {
+
+    this.prenom = this.widget.user.prenom;
+    this.nom = this.widget.user.nom;
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -95,6 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               ),
                                               child: new TextFormField(
                                                 obscureText: false,
+                                                initialValue: this.widget.user.cin,
                                                 enabled: false,
                                                 focusNode: FocusNode(),
                                                 enableInteractiveSelection: false,
@@ -142,6 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               child: new TextFormField(
                                                 obscureText: false,
 
+                                                initialValue: this.widget.user.prenom,
                                                 style: const TextStyle(
                                                   fontFamily: "peugeot-regular",
                                                   color: Colors.black,
@@ -190,7 +234,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               ),
                                               child: new TextFormField(
                                                 obscureText: false,
-
+                                                initialValue: this.widget.user.nom,
                                                 style: const TextStyle(
                                                   fontFamily: "peugeot-regular",
                                                   color: Colors.black,
@@ -213,7 +257,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           ],
                                         ),
                                       ),
-
 
                                     ],
 
@@ -244,8 +287,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           ),
         ),
-      ),            ChangePasswordChildScreen(),
-            DisableAccoundChildScreen()
+      ),            //ChangePasswordChildScreen(),
+            DisableAccoundChildScreen(this.widget.user)
 
           ],
         ),
