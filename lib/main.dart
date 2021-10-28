@@ -1,12 +1,13 @@
 import 'package:chauffeur_app/view/screens/HomeScreen.dart';
 import 'package:chauffeur_app/view/screens/LoginScreen.dart';
+import 'package:chauffeur_app/view/screens/TestTestScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(new MaterialApp(
     title: "Peugeot App",
     debugShowCheckedModeBanner: false,
-    home: new LoginScreen()
+    home: LoginScreen()
   ));
 }
 

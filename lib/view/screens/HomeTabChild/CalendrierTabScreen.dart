@@ -58,6 +58,8 @@ class _CalendrierTabScreenState extends State<CalendrierTabScreen> {
   Widget markMissionOnCalendar(DateTime day)
   {
     int count = missions.where((element) => element.date.day == day.day && element.date.month == day.month && element.date.year == day.year).length;
+
+
     if (count > 0) {
       return Center(
           child:

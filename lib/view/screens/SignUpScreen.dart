@@ -18,12 +18,15 @@ class SignUpScreen extends StatefulWidget
 class _SignUpScreenState extends State<SignUpScreen> {
 
   final RoundedLoadingButtonController _btnControllerInfo = RoundedLoadingButtonController();
+
   String prenom="",nom="",cin="",confirmMdp="",mdp="";
 
   final formGlobalKey = GlobalKey < FormState > ();
 
   showSignUpResult(String message)
   {
+
+
     showDialog(
       context: context,
       builder: (context) {
@@ -313,7 +316,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                     ),
                                                   ),
                                                   child: new TextFormField(
-                                                    obscureText: false,
+                                                    obscureText: true,
 
                                                     style: const TextStyle(
                                                       fontFamily: "peugeot-regular",
@@ -375,7 +378,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                     ),
                                                   ),
                                                   child: new TextFormField(
-                                                    obscureText: false,
+                                                    obscureText: true,
 
                                                     style: const TextStyle(
                                                       fontFamily: "peugeot-regular",

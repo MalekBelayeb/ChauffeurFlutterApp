@@ -93,6 +93,8 @@ class _MesAffectationsTabScreenState extends State<MesAffectationsTabScreen> {
                       icon: Icon(Icons.keyboard_arrow_down),
                       items: items)
                 ],),
+
+
               Expanded(child:
     ValueListenableBuilder<List<Mission>>(
     valueListenable: missionsByType,
