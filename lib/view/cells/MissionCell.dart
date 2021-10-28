@@ -84,7 +84,7 @@ class MissionCell extends StatelessWidget
                           fontSize: 14,
                           color: Colors.black,
                         )),
-                        Text(DateManager.HandleMissionDate(this.mission.date), style: TextStyle(
+                        Text(DateManager.HandleVoitureDate(this.mission.date), style: TextStyle(
                           fontFamily: "peugeot-regular",
                           fontSize: 12,
                           color: Colors.black,

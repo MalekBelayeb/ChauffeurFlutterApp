@@ -9,8 +9,8 @@ class Etat{
 
   factory Etat.fromJson(Map<String, dynamic> json)
   {
-    return Etat(
 
+    return Etat(
         Traitement.values.firstWhere((element) => element.toString() == 'Traitement.'+json['etat'])
         ,json['note']
 

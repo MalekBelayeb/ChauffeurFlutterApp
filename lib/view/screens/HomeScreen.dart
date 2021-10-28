@@ -50,6 +50,12 @@ class HomeScreen extends StatelessWidget
       child: Scaffold(
         appBar: AppBar(
 
+          title:this.user == null ? Text("") : Text(this.user!.prenom.toString() + " "+ this.user!.nom.toString(),style:  TextStyle(
+            fontFamily: "peugeot-bold",
+            fontSize: 16,
+            color: Colors.white,
+          ),),
+
           actions: [Padding(
               padding: EdgeInsets.only(right: 15.0),
               child: Row(
@@ -91,7 +97,7 @@ class HomeScreen extends StatelessWidget
           ),
           bottom: TabBar(indicatorColor: Colors.white,tabs: myTabs),
         ),
-      body: TabBarView(children: [MesAffectationsTabScreen(),CalendrierTabScreen()],),
+      body: TabBarView(children: [MesAffectationsTabScreen(this.user!),CalendrierTabScreen(this.user!)],),
       ),
     );
 

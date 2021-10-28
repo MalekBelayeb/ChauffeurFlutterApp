@@ -1,5 +1,6 @@
 import 'package:chauffeur_app/controller/MissionController.dart';
 import 'package:chauffeur_app/entity/Mission.dart';
+import 'package:chauffeur_app/entity/User.dart';
 import 'package:chauffeur_app/utils/CustomPageRoute.dart';
 import 'package:chauffeur_app/utils/StafimColors.dart';
 import 'package:chauffeur_app/view/cells/MissionCell.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class MesAffectationsTabScreen extends StatefulWidget
 {
-
+  User user;
+  MesAffectationsTabScreen(this.user);
   @override
   State<MesAffectationsTabScreen> createState() => _MesAffectationsTabScreenState();
 }
@@ -44,7 +46,7 @@ class _MesAffectationsTabScreenState extends State<MesAffectationsTabScreen> {
 
   loadMissions()
   {
-    MissionController.instance.getMissionList().then((val) =>
+    MissionController.instance.getMissionList(this.widget.user).then((val) =>
     {
       this.listMissions = val,
 

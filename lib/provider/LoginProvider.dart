@@ -11,7 +11,8 @@ class LoginProvider {
 
   static LoginProvider get instance => _instance;
 
-  var updateMissionsUrl = Constants.HOST+":"+Constants.PORT+"/authFF/signInChauffeur";
+  var signInChauffeur = Constants.HOST+":"+Constants.PORT+"/authFF/signInChauffeur";
+  var singUpChauffeur = Constants.HOST+":"+Constants.PORT+"/authFF/signUpChauffeur";
   var UpdateChauffeur = Constants.HOST+":"+Constants.PORT+"/authFF/UpdateChauffeur";
   var deleteAccountChauffeur = Constants.HOST+":"+Constants.PORT+"/authFF/deleteAccountChauffeur";
 
@@ -24,7 +25,7 @@ class LoginProvider {
 
   Future<dynamic> loginChauffeur(String cin,String password) async {
 
-    var response = await http.post(updateMissionsUrl,
+    var response = await http.post(signInChauffeur,
         body: jsonEncode(
             {
               "cin":cin,
@@ -59,6 +60,21 @@ class LoginProvider {
 
     return response.statusCode;
 
+  }
+
+  Future<int> signUpChauffeur(String cin,String nom,String prenom,String password) async {
+
+    var response = await http.post(singUpChauffeur,
+        body: jsonEncode(
+            {
+              "cin":cin,
+              "nom":nom,
+              "prenom":prenom,
+              "password":password
+            }
+        ), headers: {"Content-Type": "application/json"});
+
+    return response.statusCode;
 
   }
 

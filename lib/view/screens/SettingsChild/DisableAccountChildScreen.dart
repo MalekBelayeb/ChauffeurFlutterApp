@@ -54,6 +54,7 @@ class DisableAccoundChildScreen extends StatelessWidget {
               onPressed: (){
 
                 deleteAccount(context);
+
               },
               child: new Text('Oui'),
             ),

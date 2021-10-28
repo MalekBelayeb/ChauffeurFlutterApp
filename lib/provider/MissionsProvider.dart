@@ -27,7 +27,6 @@ class MissionProvider{
         body: jsonEncode({"chauffeurId":chauffeurId}), headers: {"Content-Type": "application/json"});
 
     if (response.statusCode == 200) {
-
       return parseMission(response.body);
 
     } else {

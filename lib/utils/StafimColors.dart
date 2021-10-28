@@ -21,7 +21,7 @@ class StafimColors{
 
   static BoxDecoration BACKGROUND_COLOR_SIGNIN = BoxDecoration(
     gradient: LinearGradient(
-      colors: [Color.fromRGBO(220,220,220, 1),Color.fromRGBO(245,245,245, 1)],
+      colors: [Color.fromRGBO(237, 237, 237, 1),Color.fromRGBO(245,245,245, 1)],
       begin: Alignment(0.5,1),
       end:Alignment(0.5,0.5),
     ),

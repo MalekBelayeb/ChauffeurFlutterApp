@@ -1,6 +1,7 @@
 
 
 import 'package:chauffeur_app/entity/Mission.dart';
+import 'package:chauffeur_app/entity/User.dart';
 import 'package:chauffeur_app/provider/MissionsProvider.dart';
 
 class MissionController{
@@ -11,10 +12,10 @@ class MissionController{
 
   static MissionController get instance => _instance;
 
-   Future<List<Mission>> getMissionList()
+   Future<List<Mission>> getMissionList(User user)
   {
 
-    return MissionProvider.instance.fetchMissions('617480edea13dd38f0d98bb6');
+    return MissionProvider.instance.fetchMissions(user.id);
 
   }
 

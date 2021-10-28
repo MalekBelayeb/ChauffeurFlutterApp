@@ -16,6 +16,12 @@ class LoginController
     return await LoginProvider.instance.loginChauffeur(cin, password);
   }
 
+  Future<dynamic> SignUpChauffeur(String cin,String nom,String prenom,String password) async {
+
+    return await LoginProvider.instance.signUpChauffeur( cin, nom, prenom, password);
+  }
+
+
   Future<int> updateChauffeur(String id,String nom,String prenom) async {
 
     return await LoginProvider.instance.updateChauffeur(id, nom, prenom);

@@ -1,8 +1,9 @@
 import 'package:chauffeur_app/controller/LoginController.dart';
 import 'package:chauffeur_app/entity/User.dart';
-import 'package:chauffeur_app/utils/CustomPageRoute.dart';
 import 'package:chauffeur_app/utils/StafimColors.dart';
 import 'package:chauffeur_app/view/screens/HomeScreen.dart';
+import 'package:chauffeur_app/view/screens/SignUpScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -11,6 +12,7 @@ class LoginScreen extends StatefulWidget
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
+
 }
 
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
@@ -18,7 +20,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   final RoundedLoadingButtonController _btnControllerInfo = RoundedLoadingButtonController();
 
   String cin = "",mdp = "";
+  void signUpTapped()
+  {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
 
+  }
   void signInTapped() async
   {
    var result = await LoginController.instance.SignInChauffeur(cin, mdp);
@@ -96,10 +102,49 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       body: Container(
         decoration:StafimColors.BACKGROUND_COLOR_SIGNIN,
         child:Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Text("STAFIM",style:TextStyle(
+                        fontFamily: "peugeot-regular",
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32
+                    )
+                    )
+                  ],
+                ),
+
+
+                Row(
+                  children: [
+                    SizedBox(width: 5,),
+                    Image(image:  AssetImage("assets/images/peugeot.png"),width: 32,height: 32,),
+                    Text("PEUGEOT",style:TextStyle(
+              fontFamily: "peugeot-regular",
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold
+          ))
+
+                  ],
+                ),
+
+
+              ],
+            ),
+
+            SizedBox(height: 20,),
 
             Card(
 
@@ -147,14 +192,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                               obscureText: false,
 
 
-    onChanged: (value){
+                                                onChanged: (value){
 
-    setState(() {
-    this.cin = value;
-    });
-    },
+                                                setState(() {
+                                                this.cin = value;
+                                                });
+                                                },
 
-    style: const TextStyle(
+                                                style: const TextStyle(
                                                 fontFamily: "peugeot-regular",
                                                 color: Colors.black,
                                               ),
@@ -218,18 +263,40 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                             Padding(
                               padding: const EdgeInsets.only(top:20),
-                              child: Container(
+                              child:Row(
 
-                                width: 120.0,
-                                height: 40.0,
-                                child: RoundedLoadingButton(
+                                mainAxisAlignment: MainAxisAlignment.center,
 
-                                  child: Text('Se connecter', style: TextStyle(fontFamily: "peugeot-regular",fontSize: 12,color: Colors.white)),
-                                  controller: _btnControllerInfo,
-                                  onPressed: signInTapped,
-                                ),
+                                children: [
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+
+                                    width: 120.0,
+                                    height: 40.0,
+                                    child: RoundedLoadingButton(
+
+                                      child: Text('Se connecter', style: TextStyle(fontFamily: "peugeot-regular",fontSize: 12,color: Colors.white)),
+                                      controller: _btnControllerInfo,
+                                      onPressed: signInTapped,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )
+                            ),
+
+                            SizedBox(height: 20,),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [Text("Ou ",style: TextStyle(fontFamily: "peugeot-regular",fontSize: 12,color: Colors.black),),GestureDetector(
+                              onTap: signUpTapped,
+                              child: Text(
+                                "inscrivez-vous",
+                                style: TextStyle(fontFamily: "peugeot-regular",fontSize: 12,color: Colors.black,decoration: TextDecoration.underline),
+                              ),
+                            ),Text(" maintenant",style: TextStyle(fontFamily: "peugeot-regular",fontSize: 12,color: Colors.black),)])
                           ],
                         )],
                     )
